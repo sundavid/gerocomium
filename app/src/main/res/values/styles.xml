@@ -1,0 +1,23 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="article_title">
+        <item name="android:textSize">10pt</item>
+
+    </style>
+
+    <style name="article_author">
+        <item name="android:textSize">8pt</item>
+
+    </style>
+
+    <style name="article_content">
+        <item name="android:textSize">9pt</item>
+
+    </style>
+
+</resources>

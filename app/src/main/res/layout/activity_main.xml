@@ -1,0 +1,32 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <!--
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.swt.geracomium.FooterFragment"
+        android:id="@+id/footer"
+        android:layout_gravity="center_horizontal|bottom"
+        tools:layout="@layout/fragment_footer" />
+        -->
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="515dp"
+        android:id="@+id/articles"
+        android:layout_gravity="center_horizontal|top" />
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/footer"
+        android:layout_gravity="center_horizontal|bottom" />
+
+
+</FrameLayout>
