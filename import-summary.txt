@@ -1,0 +1,283 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+ * Project KDWB:/Users/dsun/Downloads/android_weibo/.classpath:
+   Could not resolve source path WebContent/WEB-INF/classes in project KDWB:
+   ignored. The project may not compile if the given source path provided source
+   code.
+
+ * Project KDWB:/Users/dsun/Downloads/android_weibo/.classpath:
+   Absolute path in the path entry: If outside project, may not work correctly:
+   C:/TDDOWNLOAD/mysql-connector-java-5.1.12/mysql-connector-java-5.1.12-bin.jar
+
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .jsdtscope
+* AlbumActivity$1.class
+* AlbumActivity$2.class
+* AlbumActivity$3.class
+* AlbumActivity$4.class
+* AlbumActivity$5.class
+* AlbumActivity$6.class
+* AlbumActivity$7$1.class
+* AlbumActivity$7.class
+* AlbumActivity$8.class
+* AlbumActivity$9.class
+* AlbumActivity.class
+* AlbumActivity.java
+* AlbumListActivity$1.class
+* AlbumListActivity$2.class
+* AlbumListActivity$3.class
+* AlbumListActivity$4.class
+* AlbumListActivity.class
+* AlbumListActivity.java
+* AndroidManifest.xml
+* CommentActivity$1.class
+* CommentActivity$2.class
+* CommentActivity$3.class
+* CommentActivity.class
+* CommentActivity.java
+* Comments.class
+* Comments.java
+* ConstantUtil.class
+* ConstantUtil.java
+* ContactsActivity$1.class
+* ContactsActivity$2.class
+* ContactsActivity$3.class
+* ContactsActivity$4.class
+* ContactsActivity$5.class
+* ContactsActivity.class
+* ContactsActivity.java
+* DBUtil.class
+* DBUtil.java
+* Diary.class
+* Diary.java
+* DiaryActivity$1.class
+* DiaryActivity$2.class
+* DiaryActivity$3.class
+* DiaryActivity.class
+* DiaryActivity.java
+* FileUploadServlet.class
+* FileUploadServlet.java
+* FunctionTabActivity$1.class
+* FunctionTabActivity$2.class
+* FunctionTabActivity.class
+* FunctionTabActivity.java
+* HeadInfo.class
+* HeadInfo.java
+* HomePageActivity.class
+* HomePageActivity.java
+* KDWB_Android.apk
+* LoginActivity$1.class
+* LoginActivity$2.class
+* LoginActivity$3.class
+* LoginActivity$4.class
+* LoginActivity.class
+* LoginActivity.java
+* MANIFEST.MF
+* ModifyDiaryActivity$1.class
+* ModifyDiaryActivity$2.class
+* ModifyDiaryActivity$3.class
+* ModifyDiaryActivity.class
+* ModifyDiaryActivity.java
+* MyAlbumListActivity$1.class
+* MyAlbumListActivity$2.class
+* MyAlbumListActivity$3.class
+* MyAlbumListActivity$4.class
+* MyAlbumListActivity$5.class
+* MyAlbumListActivity$6.class
+* MyAlbumListActivity$7.class
+* MyAlbumListActivity$8.class
+* MyAlbumListActivity.class
+* MyAlbumListActivity.java
+* MyConnector.class
+* MyConnector.java
+* MyDiaryActivity$1.class
+* MyDiaryActivity$2.class
+* MyDiaryActivity$3.class
+* MyDiaryActivity$4$1.class
+* MyDiaryActivity$4$2.class
+* MyDiaryActivity$4.class
+* MyDiaryActivity$5.class
+* MyDiaryActivity$6.class
+* MyDiaryActivity.class
+* MyDiaryActivity.java
+* MyServlet.class
+* MyServlet.java
+* MyServletContextListener.class
+* MyServletContextListener.java
+* P_Comments.class
+* P_Comments.java
+* PhotoInfo.class
+* PhotoInfo.java
+* PublishActivity$1.class
+* PublishActivity$2$1.class
+* PublishActivity$2$2.class
+* PublishActivity$2.class
+* PublishActivity$3.class
+* PublishActivity.class
+* PublishActivity.java
+* PublishDiaryActivity$1.class
+* PublishDiaryActivity$2.class
+* PublishDiaryActivity$3.class
+* PublishDiaryActivity.class
+* PublishDiaryActivity.java
+* R$attr.class
+* R$color.class
+* R$drawable.class
+* R$id.class
+* R$layout.class
+* R$string.class
+* R$style.class
+* R.class
+* R.java
+* RegActivity$1.class
+* RegActivity$2.class
+* RegActivity$3.class
+* RegActivity$4.class
+* RegActivity$5.class
+* RegActivity.class
+* RegActivity.java
+* SearchActivity$1.class
+* SearchActivity$2.class
+* SearchActivity$3.class
+* SearchActivity$4.class
+* SearchActivity$5.class
+* SearchActivity.class
+* SearchActivity.java
+* Server.class
+* Server.java
+* ServerAgent.class
+* ServerAgent.java
+* ServerThread.class
+* ServerThread.java
+* ShootActivity$1.class
+* ShootActivity$2.class
+* ShootActivity$3.class
+* ShootActivity$4.class
+* ShootActivity$5.class
+* ShootActivity$6.class
+* ShootActivity.class
+* ShootActivity.java
+* Thumbs.db
+* UploadActivity$1.class
+* UploadActivity$2.class
+* UploadActivity$3$1.class
+* UploadActivity$3.class
+* UploadActivity$4.class
+* UploadActivity$5.class
+* UploadActivity$6.class
+* UploadActivity$7.class
+* UploadActivity$8.class
+* UploadActivity.class
+* UploadActivity.java
+* User.class
+* User.java
+* Visitor.class
+* Visitor.java
+* aaaaa.jpg
+* add.png
+* album.jsp
+* album.png
+* album.xml
+* album_list.xml
+* alert_icon.png
+* android_weibo.rar
+* app_icon.png
+* back.jpg
+* camera.png
+* classes.dex
+* codepub.com下载说明.txt
+* colors.xml
+* comment.xml
+* commons-fileupload-1.2.jar
+* commons-io-1.3.2.jar
+* contacts.jsp
+* contacts.xml
+* create.sql
+* create_db.sql
+* default.properties
+* default_head.png
+* delete.png
+* delete.sql
+* diary.jsp
+* diary.png
+* diary.xml
+* drop.sql
+* exit.png
+* friend.jsp
+* friend.png
+* friendPage.jsp
+* global.css
+* go_back.png
+* go_back2.png
+* go_back2_disable.png
+* go_back_disable.png
+* go_forward.png
+* go_forward2.png
+* go_forward2_disable.png
+* go_forward_disable.png
+* head.jsp
+* head_default.jpg
+* icon.png
+* index.jsp
+* insert.sql
+* link_1.png
+* link_2.png
+* login.jsp
+* login.xml
+* modifyDiary.jsp
+* modify_diary.xml
+* new_album.xml
+* no_image.jpg
+* org.eclipse.jdt.core.prefs
+* org.eclipse.wst.common.component
+* org.eclipse.wst.common.project.facet.core.xml
+* org.eclipse.wst.jsdt.ui.superType.container
+* org.eclipse.wst.jsdt.ui.superType.name
+* p_diary.png
+* p_shoot.png
+* p_status.png
+* personalInfo.jsp
+* photo.jsp
+* protocol.txt
+* publish.png
+* publish.xml
+* publish_diary.xml
+* publish_status.xml
+* reg.xml
+* register.jsp
+* resources.ap_
+* search.png
+* search.xml
+* searchList.jsp
+* shoot.xml
+* strings.xml
+* style.xml
+* ui_sprites.jpg
+* upload.xml
+* uploadImage.jsp
+* visitor.jsp
+* visitor.png
+* web.xml
+* write.jsp
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)
