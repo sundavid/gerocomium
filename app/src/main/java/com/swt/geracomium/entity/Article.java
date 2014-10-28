@@ -12,16 +12,80 @@ public class Article {
     public String type;
     public String title;
     public User author;
-    public Date created_at;
-    public Date published_at;
+    // public Date created_at;
+    public String published_at;
     public String content;
-    //public images;
+    public String imagelUrl;
 
     public void parse(JSONObject response) throws JSONException {
         type = response.getString("type");
         title = response.getString("title");
         author = User.getUser(response.getString("author"));
         content = response.getString("content");
+        // imagelUrl = response.getString("image");
+        imagelUrl = "http://api.androidhive.info/json/movies/1.jpg";
+        Date now_time = new Date();
+        now_time.getTime();
+        published_at = now_time.toString();
     }
+
+    public Article() {
+    }
+
+    /*
+    public Article(String type, String title, User author, String content, String thumbnailUrl) {
+        this.type = type;
+        this.title = title;
+        this.author = author;
+        this.content = content;
+        this.thumbnailUrl = thumbnailUrl;
+    }
+    */
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    /*
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+    */
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getImageUrl() {
+        return imagelUrl;
+    }
+
+    /*
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+    */
+
+    public String getPublishedTime() {
+        return published_at;
+    }
+
+    /*
+    public void setPublishedTime(Date new_date) {
+        this.published_at = new_date.toString();
+    }
+    */
 
 }

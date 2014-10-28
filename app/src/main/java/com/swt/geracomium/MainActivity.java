@@ -1,91 +1,109 @@
 package com.swt.geracomium;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.SimpleAdapter;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
+// import com.swt.geracomium.CustomListAdapter;
+// import com.swt.geracomium.AppController;
 import com.swt.geracomium.entity.Article;
 import com.swt.geracomium.entity.User;
 import com.swt.geracomium.entity.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+// import android.app.Activity;
+import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.util.Log;
+// import android.view.Menu;
+// import android.view.MenuItem;
+import android.widget.ListView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 
 public class MainActivity extends Activity {
 
-    private AbsListView articlesView;
-    private RequestQueue mVolleyQueue;
+    // Log tag
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    //json url
+    //private static final String url = "http://api.androidhive.info/json/movies.json";
+    private ProgressDialog progressDialog;
+    private List<Article> articleList = new ArrayList<Article>();
+    private ListView listView;
+    private CustomListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        articlesView = (AbsListView) this.findViewById(R.id.articles);
-        mVolleyQueue = Volley.newRequestQueue(this);
+        listView = (ListView)findViewById(R.id.articles);
+        adapter = new CustomListAdapter(this, articleList);
+        listView.setAdapter(adapter);
 
-        final MainActivity self = this;
+        // show progress dialog before making http request;
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("加载中...");
+        progressDialog.show();
 
-        JsonArrayRequest r = new JsonArrayRequest(Utils.server_address + "api/articles?type=ARTICLE&format=json&user=" + String.valueOf(User.getUser().id),
+        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1b1b1b")));
+
+        // Create Volley request obj
+        JsonArrayRequest articleReq = new JsonArrayRequest(
+                Utils.server_address + "api/articles?type=ARTICLE&format=json&user=" + String.valueOf(User.getUser().id),
                 new Response.Listener<JSONArray>(){
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            ArrayList<Article> articles = new ArrayList<Article>();
-                            for (int i = 0;i < response.length(); ++i) {
-                                JSONObject o = response.getJSONObject(i);
-                                Article article = new Article();
-                                article.parse(o);
-                                articles.add(article);
-                            }
-                            self.initialize_view(articles);
-                        }
-                        catch (JSONException e) {
-                            System.out.println(e.toString());
-                        }
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d(TAG, response.toString());
+                hideProgressDialog();
+
+                // Parsing Json
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject obj = response.getJSONObject(i);
+                        Article article = new Article();
+                        article.parse(obj);
+
+                        articleList.add(article);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
+                }
+                // notify the adapter about data changes
+                // so that it renders the list view with updated data
+                adapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                hideProgressDialog();
             }
         });
-        mVolleyQueue.add(r);
+        AppController.getInstance().addToRequestQueue(articleReq);
 
         this.setFooter();
-
     }
 
-    public void initialize_view(ArrayList<Article> articles) {
-        // SimpleAdapter adapter = new SimpleAdapter(this, get)
-        ArrayList<HashMap<String, Object> > data = new ArrayList<HashMap<String, Object>>();
-        for (Article a: articles) {
-            HashMap<String, Object> article = new HashMap<String, Object>();
-            article.put("title", a.title);
-            article.put("author", a.author);
-            article.put("content", a.content);
-            data.add(article);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        hideProgressDialog();
+    }
+
+    private void hideProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
         }
-        SimpleAdapter adapter = new SimpleAdapter(this, data, R.layout.article,
-                new String[] {"title", "author", "content"},
-                new int[] {R.id.title, R.id.author, R.id.content});
-        articlesView.setAdapter(adapter);
     }
 }

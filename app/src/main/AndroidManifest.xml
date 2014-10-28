@@ -7,6 +7,7 @@
         android:targetSdkVersion="20" />
 
     <application
+        android:name="com.swt.geracomium.AppController"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -39,6 +40,7 @@
             android:label="@string/title_activity_post" >
         </activity>
     </application>
+
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
 
