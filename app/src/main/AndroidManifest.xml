@@ -39,10 +39,6 @@
             android:name=".PostActivity"
             android:label="@string/title_activity_post" >
         </activity>
-        <activity
-            android:name=".TabActivity"
-            android:label="@string/title_activity_tab" >
-        </activity>
     </application>
 
     <!-- To access Google+ APIs: -->
