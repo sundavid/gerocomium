@@ -15,9 +15,12 @@
     <string name="phone_number">电话</string>
     <string name="age">年龄</string>
     <string name="title_activity_post">PostActivity</string>
-
     <string name="article">动态</string>
     <string name="alert">报警</string>
     <string name="notification">通知</string>
+    <string name="title_activity_tab">TabActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
 
 </resources>

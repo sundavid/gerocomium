@@ -23,7 +23,7 @@ public class Article {
         author = User.getUser(response.getString("author"));
         content = response.getString("content");
         // imagelUrl = response.getString("image");
-        imagelUrl = "http://api.androidhive.info/json/movies/1.jpg";
+        imagelUrl = "http://182.92.193.33:8000/images/images/2013-01-20_09-34-08_303413_org-8.jpg";
         Date now_time = new Date();
         now_time.getTime();
         published_at = now_time.toString();
