@@ -6,32 +6,25 @@
 
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top">
+        android:layout_gravity="center_horizontal|top"
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/title"
-            android:text="Article Title"
-            style="@style/article_title"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/author"
-            android:text="Article Author"
-            style="@style/article_author"/>
-
-        <TextView
+            style="@style/article_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/content"
-            android:text="Article Content"
-            style="@style/article_content"/>
+            android:text="Article Author" />
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/content"
+            style="@style/article_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Article Content" />
+
+    </LinearLayout>
 
 </FrameLayout>

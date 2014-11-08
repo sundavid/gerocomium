@@ -5,4 +5,19 @@ package com.swt.geracomium.entity;
  */
 public class Utils {
     public static String server_address;
+
+    public static String csrf_token;
+
+    public static User user;
+
+    public static int window_width;
+
+    public static int window_height;
+
+
+    static {
+        server_address = "";
+        csrf_token = "";
+        user = User.getUser();
+    }
 }

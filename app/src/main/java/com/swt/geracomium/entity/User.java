@@ -1,8 +1,5 @@
 package com.swt.geracomium.entity;
 
-import com.swt.geracomium.R;
-import com.swt.geracomium.entity.Utils;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,24 +9,25 @@ import java.util.HashMap;
  * Created by dsun on 10/10/14.
  */
 public class User {
+    public static User user;
+    public static HashMap<String, User> users;
+
+    static {
+        user = new User();
+        users = new HashMap<String, User>();
+    }
+
     public int id;
     public String email;
     public String name;
     public String phone_number;
-    public String photo;
+    public String icon;
     public String address;
     public int age;
     public String gender;
     public User emergency_contact;
     public String role;
     public String room_number;
-
-    public static User user;
-    public static HashMap<String, User> users;
-    static {
-        user = new User();
-        users = new HashMap<String, User>();
-    }
 
     public static User getUser() {
         return getUser("");
@@ -41,8 +39,7 @@ public class User {
         return users.get(url);
     }
 
-    public boolean login(String username, String password)
-    {
+    public boolean login(String username, String password) {
         return false;
     }
 
@@ -56,7 +53,7 @@ public class User {
         user.id = response.getInt("id");
         user.name = response.getString("name");
         user.phone_number = response.getString("phone_number");
-        user.photo = response.getString("photo");
+        user.icon = response.getString("icon");
         user.role = response.getString("role");
         user.room_number = response.getString("room_number");
     }

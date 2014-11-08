@@ -5,19 +5,31 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="article_title">
+    <style name="base">
+        <item name="android:colorBackground">@color/background</item>
         <item name="android:textSize">10pt</item>
+    </style>
 
+    <style name="footer" parent="base">
+        <item name="android:textSize">17dp</item>
+    </style>
+
+    <style name="footer_selected" parent="footer">
+        <item name="android:color">@color/selected</item>
     </style>
 
     <style name="article_author">
-        <item name="android:textSize">8pt</item>
+        <item name="android:textSize">15dp</item>
+    </style>
 
+    <style name="article_time">
+        <item name="android:textSize">10dp</item>
+        <item name="android:textColor">@color/genre</item>
     </style>
 
     <style name="article_content">
-        <item name="android:textSize">9pt</item>
-
+        <item name="android:textSize">14dp</item>
+        <item name="android:padding">5dp</item>
     </style>
 
 </resources>

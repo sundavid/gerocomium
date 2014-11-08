@@ -2,32 +2,32 @@ package com.swt.geracomium;
 
 // import com.swt.geracomium.CustomListAdapter;
 // import com.swt.geracomium.AppController;
-import com.swt.geracomium.entity.Article;
-import com.swt.geracomium.entity.User;
-import com.swt.geracomium.entity.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-// import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-// import android.view.Menu;
-// import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.swt.geracomium.entity.Article;
+import com.swt.geracomium.entity.User;
+import com.swt.geracomium.entity.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+// import android.app.Activity;
+// import android.view.Menu;
+// import android.view.MenuItem;
 
 public class MainActivity extends Activity {
 
@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
 
         // Create Volley request obj
         JsonArrayRequest articleReq = new JsonArrayRequest(
-                Utils.server_address + "api/articles?type=ARTICLE&format=json&user=" + String.valueOf(User.getUser().id),
+                Utils.server_address + "/api/articles?type=ARTICLE&format=json&user=" + String.valueOf(User.getUser().id),
                 new Response.Listener<JSONArray>(){
             @Override
             public void onResponse(JSONArray response) {

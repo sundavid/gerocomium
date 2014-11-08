@@ -1,38 +1,36 @@
 package com.swt.geracomium;
 
 import android.content.Intent;
-
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
+import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.VolleyError;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.SignInButton;
-import java.util.ArrayList;
-import java.util.List;
-import com.swt.geracomium.R;
-
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.swt.geracomium.entity.User;
 import com.swt.geracomium.entity.Utils;
+import com.swt.geracomium.util.CookieStringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.util.Log.v;
 
 
 /**
@@ -50,13 +48,21 @@ public class LoginActivity extends Activity {
     private EditText mPasswordView;
     private RequestQueue mVolleyQueue;
 
+    private void init() {
+        WindowManager wm = this.getWindowManager();
+        Utils.window_height = wm.getDefaultDisplay().getHeight();
+        Utils.window_width = wm.getDefaultDisplay().getWidth();
+        Utils.server_address = getString(R.string.server_address);
+        mVolleyQueue = Volley.newRequestQueue(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        init();
         super.onCreate(savedInstanceState);
         /*
         setup global settings
          */
-        Utils.server_address = getString(R.string.server_address);
 
         setContentView(R.layout.activity_login);
 
@@ -71,8 +77,12 @@ public class LoginActivity extends Activity {
                 attemptLogin();
             }
         });
-
-        mVolleyQueue = Volley.newRequestQueue(this);
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        String username = settings.getString("username", "");
+        String password = settings.getString("password", "");
+        if (!username.isEmpty() && !password.isEmpty()) {
+            this.loginWithCsrf(username, password);
+        }
     }
 
     /**
@@ -119,31 +129,7 @@ public class LoginActivity extends Activity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
-            final User user = User.getUser();
-            final LoginActivity self = this;
-            JsonObjectRequest r = new JsonObjectRequest(Utils.server_address + "login?username=" + email, null,
-                    new Response.Listener<JSONObject>(){
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                user.parse(response);
-                                Intent mIntent = new Intent(self, MainActivity.class);
-                                startActivity(mIntent);
-                            }
-                            catch (JSONException e) {
-                                mEmailView.setError(e.toString());
-                                mEmailView.requestFocus();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            mEmailView.setError(getString(R.string.error_incorrect_password));
-                            mEmailView.requestFocus();
-                        }
-            });
-            mVolleyQueue.add(r);
+            this.loginWithCsrf(email, password);
         }
     }
 
@@ -162,5 +148,94 @@ public class LoginActivity extends Activity {
      */
     public void showProgress(final boolean show) {
 
+    }
+
+    public void onError(final String error, EditText view) {
+        view.setError(error);
+        view.requestFocus();
+    }
+
+    public void onError(final String error) {
+        this.onError(error, mEmailView);
+    }
+
+    public void loginWithCsrf(final String username, final String password) {
+        String login_url = Utils.server_address + "/api-auth/login";
+        v("connect", login_url);
+        final LoginActivity self = this;
+        StringRequest r = new CookieStringRequest(login_url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Document document = Jsoup.parse(response);
+                        for (Element element : document.body().getElementsByAttributeValue("name", "csrfmiddlewaretoken")) {
+                            Utils.csrf_token = element.attr("value");
+                        }
+                        v("connect", "csrf token: " + Utils.csrf_token);
+                        if (Utils.csrf_token.isEmpty())
+                            self.onError(getString(R.string.connect_error));
+                        else self.login(username, password);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                self.onError(getString(R.string.connect_error));
+            }
+        }
+        );
+        mVolleyQueue.add(r);
+    }
+
+    public void login(final String username, final String password) {
+        showProgress(true);
+        final User user = User.getUser();
+        final LoginActivity self = this;
+        JSONObject postObject = new JSONObject();
+        try {
+            v("debug", Utils.csrf_token);
+            postObject.put("csrfmiddlewaretoken", Utils.csrf_token);
+            postObject.put("username", username);
+            postObject.put("password", password);
+            postObject.put("next", "/account/profile?username=" + username);
+        } catch (JSONException e) {
+            this.onError(getString(R.string.connect_error));
+            return;
+        }
+        v("connect", "params: " + postObject.toString());
+
+        final SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        CookieStringRequest r = new CookieStringRequest(Request.Method.POST, Utils.server_address + "/api-auth/login/",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject json = new JSONObject(response);
+                            user.parse(json);
+                            Intent mIntent = new Intent(self, MainActivity.class);
+                            startActivity(mIntent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            self.onError(getString(R.string.connect_error));
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                self.onError(getString(R.string.error_incorrect_password));
+            }
+        }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("csrfmiddlewaretoken", Utils.csrf_token);
+                params.put("username", username);
+                params.put("password", password);
+                params.put("next", "/account/profile?username=" + username);
+                v("david", params.toString());
+                return params;
+            }
+        };
+        mVolleyQueue.add(r);
     }
 }

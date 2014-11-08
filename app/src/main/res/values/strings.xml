@@ -9,7 +9,7 @@
     <string name="footer_post">发表</string>
     <string name="footer_notify">提醒</string>
     <string name="footer_personal">我的</string>
-    <string name="server_address">http://182.92.193.33:8000/</string>
+    <string name="server_address">http://182.92.193.33:8000</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="name">姓名</string>
     <string name="phone_number">电话</string>
@@ -22,5 +22,8 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
+    <string name="connect_error">服务器连接不正常</string>
+    <string name="date_from_format">yyyy-MM-ddTHH:mm:SSZ</string>
+    <string name="date_to_format">yyyy-MM-dd HH:mm</string>
 
 </resources>

@@ -3,6 +3,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/base"
     tools:context=".MainActivity"
     tools:ignore="MergeRootFrame" >
 
@@ -17,18 +18,18 @@
         -->
 
     <ListView
+        android:id="@+id/articles"
         android:layout_width="wrap_content"
         android:layout_height="515dp"
-        android:id="@+id/articles"
         android:layout_gravity="center_horizontal|top"
         android:divider="@color/list_divider"
         android:dividerHeight="1dp"
         android:listSelector="@drawable/list_row_selector"/>
 
     <include
+        layout="@layout/footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/footer"
         android:layout_gravity="center_horizontal|bottom" />
 
 

@@ -1,9 +1,13 @@
 package com.swt.geracomium.entity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by dsun on 10/12/14.
@@ -11,36 +15,37 @@ import java.util.Date;
 public class Article {
     public String type;
     public String title;
-    public User author;
+    public int author_id;
+    public String author_name;
+    public String author_icon;
     // public Date created_at;
-    public String published_at;
+    public Date published_at;
     public String content;
-    public String imagelUrl;
-
-    public void parse(JSONObject response) throws JSONException {
-        type = response.getString("type");
-        title = response.getString("title");
-        author = User.getUser(response.getString("author"));
-        content = response.getString("content");
-        // imagelUrl = response.getString("image");
-        imagelUrl = "http://182.92.193.33:8000/images/images/2013-01-20_09-34-08_303413_org-8.jpg";
-        Date now_time = new Date();
-        now_time.getTime();
-        published_at = now_time.toString();
-    }
+    public String[] images;
 
     public Article() {
     }
 
-    /*
-    public Article(String type, String title, User author, String content, String thumbnailUrl) {
-        this.type = type;
-        this.title = title;
-        this.author = author;
-        this.content = content;
-        this.thumbnailUrl = thumbnailUrl;
+    public void parse(JSONObject response) throws JSONException {
+        type = response.getString("type");
+        title = response.getString("title");
+        author_id = response.getInt("author");
+        author_name = response.getString("author_name");
+        author_icon = response.getString("author_icon");
+        content = response.getString("content");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
+        try {
+            published_at = format.parse(response.getString("published_at"));
+        } catch (ParseException e) {
+            published_at = new Date();
+        }
+
+        JSONArray imgs = response.getJSONArray("images");
+        images = new String[imgs.length()];
+        for (int i = 0; i < imgs.length(); ++i) {
+            images[i] = imgs.getString(i);
+        }
     }
-    */
 
     public String getTitle() {
         return title;
@@ -50,26 +55,12 @@ public class Article {
         this.title = title;
     }
 
-    public User getAuthor() {
-        return author;
-    }
-
-    /*
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-    */
-
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getImageUrl() {
-        return imagelUrl;
     }
 
     /*
@@ -79,13 +70,13 @@ public class Article {
     */
 
     public String getPublishedTime() {
-        return published_at;
+        long diff = (new Date()).getTime() - published_at.getTime();
+        diff /= 1000 * 60;
+        if (diff < 60) return String.valueOf(diff) + "分钟前";
+        if (diff < 60 * 20) return String.valueOf(diff / 60) + "小时前";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        format.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        return format.format(published_at);
     }
-
-    /*
-    public void setPublishedTime(Date new_date) {
-        this.published_at = new_date.toString();
-    }
-    */
 
 }
