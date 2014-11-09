@@ -63,6 +63,7 @@
         android:layout_below="@+id/content"
         android:layout_gravity="left"
         android:columnCount="3"
+        android:visibility="gone"
         android:padding="30dp" />
 
     <com.swt.geracomium.ClickedImage

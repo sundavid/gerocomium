@@ -17,10 +17,10 @@
         tools:layout="@layout/fragment_footer" />
         -->
 
-    <ListView
+        <ListView
         android:id="@+id/articles"
         android:layout_width="wrap_content"
-        android:layout_height="515dp"
+        android:layout_height="450dp"
         android:layout_gravity="center_horizontal|top"
         android:divider="@color/list_divider"
         android:dividerHeight="1dp"

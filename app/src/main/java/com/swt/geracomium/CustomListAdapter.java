@@ -95,6 +95,7 @@ public class CustomListAdapter extends BaseAdapter {
         published_at.setText(doc.getPublishedTime());
 
 
+        if (doc.images.length != 0) grids.setVisibility(View.VISIBLE);
         int maxWidth = Utils.window_width - 200;
         int width = maxWidth / 3;
         if (doc.images.length < 2) width = maxWidth - 200;

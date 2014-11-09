@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.android.volley.Response;
@@ -50,6 +51,7 @@ public class MainActivity extends Activity {
         listView = (ListView)findViewById(R.id.articles);
         adapter = new CustomListAdapter(this, articleList);
         listView.setAdapter(adapter);
+        // listView.setLayoutParams(new AbsListView.LayoutParams(Utils.window_width, Utils.window_height - 110));
 
         // show progress dialog before making http request;
         progressDialog = new ProgressDialog(this);
@@ -60,7 +62,7 @@ public class MainActivity extends Activity {
 
         // Create Volley request obj
         CookieJsonArrayRequest articleReq = new CookieJsonArrayRequest(
-                Utils.server_address + "/api/articles/?type=ARTICLE&format=json",
+                Utils.server_address + "/api/articles/?format=json&type=" + this.getType(),
                 new Response.Listener<JSONArray>(){
             @Override
             public void onResponse(JSONArray response) {
@@ -106,5 +108,9 @@ public class MainActivity extends Activity {
             progressDialog.dismiss();
             progressDialog = null;
         }
+    }
+
+    protected String getType() {
+        return "ARTICLE";
     }
 }

@@ -39,6 +39,10 @@
             android:name=".PostActivity"
             android:label="@string/title_activity_post" >
         </activity>
+        <activity
+            android:name=".AlertActivity"
+            android:label="@string/title_activity_alert" >
+        </activity>
     </application>
 
     <!-- To access Google+ APIs: -->
