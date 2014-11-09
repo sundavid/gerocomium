@@ -16,6 +16,8 @@
 
 package com.android.volley.toolbox;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Request.Method;
@@ -23,6 +25,7 @@ import com.android.volley.Request.Method;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.entity.BasicHttpEntity;
@@ -114,12 +117,29 @@ public class HurlStack implements HttpStack {
         }
         StatusLine responseStatus = new BasicStatusLine(protocolVersion,
                 connection.getResponseCode(), connection.getResponseMessage());
+        if (url.contains("api-auth") &&
+                (responseStatus.getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY || responseStatus.getStatusCode() == HttpStatus.SC_MOVED_PERMANENTLY)) {
+            responseStatus = new BasicStatusLine(protocolVersion,
+                    200, connection.getResponseMessage());
+        }
         BasicHttpResponse response = new BasicHttpResponse(responseStatus);
         response.setEntity(entityFromConnection(connection));
         for (Entry<String, List<String>> header : connection.getHeaderFields().entrySet()) {
             if (header.getKey() != null) {
-                Header h = new BasicHeader(header.getKey(), header.getValue().get(0));
-                response.addHeader(h);
+                String key = header.getKey();
+                List<String> values = header.getValue();
+                if(key.equalsIgnoreCase("set-cookie")){
+                    StringBuilder cookieString = new StringBuilder();
+                    for(String value : values){
+                        cookieString.append(value).append("; ");//用\n作为分隔符，cookie中不应该有回车符号
+                    }
+                    cookieString.deleteCharAt(cookieString.length() - 1);
+                    Header h = new BasicHeader(header.getKey(), cookieString.toString());
+                    response.addHeader(h);
+                }else{
+                    Header h = new BasicHeader(header.getKey(), values.get(0));
+                    response.addHeader(h);
+                }
             }
         }
         return response;
@@ -166,6 +186,7 @@ public class HurlStack implements HttpStack {
         connection.setReadTimeout(timeoutMs);
         connection.setUseCaches(false);
         connection.setDoInput(true);
+        if (url.toString().contains("api-auth")) connection.setInstanceFollowRedirects(false);
 
         // use caller-provided custom SslSocketFactory, if any, for HTTPS
         if ("https".equals(url.getProtocol()) && mSslSocketFactory != null) {
