@@ -75,43 +75,11 @@ public class BasicNetwork implements Network {
 
     /**
      * @param httpStack HTTP stack to be used
-     * @param pool      a buffer pool that improves GC performance in copy operations
+     * @param pool a buffer pool that improves GC performance in copy operations
      */
     public BasicNetwork(HttpStack httpStack, ByteArrayPool pool) {
         mHttpStack = httpStack;
         mPool = pool;
-    }
-
-    /**
-     * Attempts to prepare the request for a retry. If there are no more attempts remaining in the
-     * request's retry policy, a timeout exception is thrown.
-     *
-     * @param request The request to use.
-     */
-    private static void attemptRetryOnException(String logPrefix, Request<?> request,
-                                                VolleyError exception) throws VolleyError {
-        RetryPolicy retryPolicy = request.getRetryPolicy();
-        int oldTimeout = request.getTimeoutMs();
-
-        try {
-            retryPolicy.retry(exception);
-        } catch (VolleyError e) {
-            request.addMarker(
-                    String.format("%s-timeout-giveup [timeout=%s]", logPrefix, oldTimeout));
-            throw e;
-        }
-        request.addMarker(String.format("%s-retry [timeout=%s]", logPrefix, oldTimeout));
-    }
-
-    /**
-     * Converts Headers[] to Map<String, String>.
-     */
-    protected static Map<String, String> convertHeaders(Header[] headers) {
-        Map<String, String> result = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
-        for (int i = 0; i < headers.length; i++) {
-            result.put(headers[i].getName(), headers[i].getValue());
-        }
-        return result;
     }
 
     @Override
@@ -152,11 +120,11 @@ public class BasicNetwork implements Network {
 
                 // Some responses such as 204s do not have content.  We must check.
                 if (httpResponse.getEntity() != null) {
-                    responseContents = entityToBytes(httpResponse.getEntity());
+                  responseContents = entityToBytes(httpResponse.getEntity());
                 } else {
-                    // Add 0 byte response as a way of honestly representing a
-                    // no-content request.
-                    responseContents = new byte[0];
+                  // Add 0 byte response as a way of honestly representing a
+                  // no-content request.
+                  responseContents = new byte[0];
                 }
 
                 // if the request is slow, log it.
@@ -205,14 +173,33 @@ public class BasicNetwork implements Network {
      * Logs requests that took over SLOW_REQUEST_THRESHOLD_MS to complete.
      */
     private void logSlowRequests(long requestLifetime, Request<?> request,
-                                 byte[] responseContents, StatusLine statusLine) {
+            byte[] responseContents, StatusLine statusLine) {
         if (DEBUG || requestLifetime > SLOW_REQUEST_THRESHOLD_MS) {
             VolleyLog.d("HTTP response for request=<%s> [lifetime=%d], [size=%s], " +
-                            "[rc=%d], [retryCount=%s]", request, requestLifetime,
+                    "[rc=%d], [retryCount=%s]", request, requestLifetime,
                     responseContents != null ? responseContents.length : "null",
-                    statusLine.getStatusCode(), request.getRetryPolicy().getCurrentRetryCount()
-            );
+                    statusLine.getStatusCode(), request.getRetryPolicy().getCurrentRetryCount());
         }
+    }
+
+    /**
+     * Attempts to prepare the request for a retry. If there are no more attempts remaining in the
+     * request's retry policy, a timeout exception is thrown.
+     * @param request The request to use.
+     */
+    private static void attemptRetryOnException(String logPrefix, Request<?> request,
+            VolleyError exception) throws VolleyError {
+        RetryPolicy retryPolicy = request.getRetryPolicy();
+        int oldTimeout = request.getTimeoutMs();
+
+        try {
+            retryPolicy.retry(exception);
+        } catch (VolleyError e) {
+            request.addMarker(
+                    String.format("%s-timeout-giveup [timeout=%s]", logPrefix, oldTimeout));
+            throw e;
+        }
+        request.addMarker(String.format("%s-retry [timeout=%s]", logPrefix, oldTimeout));
     }
 
     private void addCacheHeaders(Map<String, String> headers, Cache.Entry entry) {
@@ -236,9 +223,7 @@ public class BasicNetwork implements Network {
         VolleyLog.v("HTTP ERROR(%s) %d ms to fetch %s", what, (now - start), url);
     }
 
-    /**
-     * Reads the contents of HttpEntity into a byte[].
-     */
+    /** Reads the contents of HttpEntity into a byte[]. */
     private byte[] entityToBytes(HttpEntity entity) throws IOException, ServerError {
         PoolingByteArrayOutputStream bytes =
                 new PoolingByteArrayOutputStream(mPool, (int) entity.getContentLength());
@@ -266,5 +251,16 @@ public class BasicNetwork implements Network {
             mPool.returnBuf(buffer);
             bytes.close();
         }
+    }
+
+    /**
+     * Converts Headers[] to Map<String, String>.
+     */
+    protected static Map<String, String> convertHeaders(Header[] headers) {
+        Map<String, String> result = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+        for (int i = 0; i < headers.length; i++) {
+            result.put(headers[i].getName(), headers[i].getValue());
+        }
+        return result;
     }
 }
