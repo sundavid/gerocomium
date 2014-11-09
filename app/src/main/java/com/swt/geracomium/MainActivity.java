@@ -13,10 +13,11 @@ import android.widget.ListView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.swt.geracomium.entity.Article;
 import com.swt.geracomium.entity.User;
 import com.swt.geracomium.entity.Utils;
+import com.swt.geracomium.util.Cookie;
+import com.swt.geracomium.util.CookieJsonArrayRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,8 +59,8 @@ public class MainActivity extends Activity {
         getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1b1b1b")));
 
         // Create Volley request obj
-        JsonArrayRequest articleReq = new JsonArrayRequest(
-                Utils.server_address + "/api/articles?type=ARTICLE&format=json&user=" + String.valueOf(User.getUser().id),
+        CookieJsonArrayRequest articleReq = new CookieJsonArrayRequest(
+                Utils.server_address + "/api/articles/?type=ARTICLE&format=json",
                 new Response.Listener<JSONArray>(){
             @Override
             public void onResponse(JSONArray response) {

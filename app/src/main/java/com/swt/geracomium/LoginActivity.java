@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -15,7 +16,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.HttpClientStack;
 import com.android.volley.toolbox.Volley;
 import com.swt.geracomium.entity.User;
 import com.swt.geracomium.entity.Utils;
@@ -47,7 +48,7 @@ public class LoginActivity extends Activity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private RequestQueue mVolleyQueue;
-
+    HttpClientStack s;
     private void init() {
         WindowManager wm = this.getWindowManager();
         Utils.window_height = wm.getDefaultDisplay().getHeight();
@@ -160,13 +161,13 @@ public class LoginActivity extends Activity {
     }
 
     public void loginWithCsrf(final String username, final String password) {
-        String login_url = Utils.server_address + "/api-auth/login";
-        v("connect", login_url);
+        String login_url = Utils.server_address + "/api-auth/login/";
         final LoginActivity self = this;
-        StringRequest r = new CookieStringRequest(login_url,
+        CookieStringRequest r = new CookieStringRequest(login_url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        /*
                         Document document = Jsoup.parse(response);
                         for (Element element : document.body().getElementsByAttributeValue("name", "csrfmiddlewaretoken")) {
                             Utils.csrf_token = element.attr("value");
@@ -175,6 +176,8 @@ public class LoginActivity extends Activity {
                         if (Utils.csrf_token.isEmpty())
                             self.onError(getString(R.string.connect_error));
                         else self.login(username, password);
+                        */
+                        self.login(username, password);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -190,21 +193,47 @@ public class LoginActivity extends Activity {
         showProgress(true);
         final User user = User.getUser();
         final LoginActivity self = this;
-        JSONObject postObject = new JSONObject();
-        try {
-            v("debug", Utils.csrf_token);
-            postObject.put("csrfmiddlewaretoken", Utils.csrf_token);
-            postObject.put("username", username);
-            postObject.put("password", password);
-            postObject.put("next", "/account/profile?username=" + username);
-        } catch (JSONException e) {
-            this.onError(getString(R.string.connect_error));
-            return;
-        }
-        v("connect", "params: " + postObject.toString());
 
         final SharedPreferences settings = getPreferences(MODE_PRIVATE);
         CookieStringRequest r = new CookieStringRequest(Request.Method.POST, Utils.server_address + "/api-auth/login/",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            self.setCurrentUser(username);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            self.onError(getString(R.string.connect_error));
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                self.onError(getString(R.string.error_incorrect_password));
+            }
+        }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("csrfmiddlewaretoken", Utils.csrf_token);
+                params.put("username", username);
+                params.put("password", password);
+                // params.put("next", "/account/profile?username=" + username);
+                Log.v("params", params.toString());
+                return params;
+            }
+        };
+        mVolleyQueue.add(r);
+    }
+
+    public void setCurrentUser(final String username) {
+        showProgress(true);
+        final User user = User.getUser();
+        final LoginActivity self = this;
+
+        final SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        CookieStringRequest r = new CookieStringRequest(Utils.server_address + "/account/profile?username=" + username,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -224,18 +253,7 @@ public class LoginActivity extends Activity {
                 self.onError(getString(R.string.error_incorrect_password));
             }
         }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("csrfmiddlewaretoken", Utils.csrf_token);
-                params.put("username", username);
-                params.put("password", password);
-                params.put("next", "/account/profile?username=" + username);
-                v("david", params.toString());
-                return params;
-            }
-        };
+        );
         mVolleyQueue.add(r);
     }
 }

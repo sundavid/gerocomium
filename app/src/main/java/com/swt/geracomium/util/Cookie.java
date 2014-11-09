@@ -1,5 +1,9 @@
 package com.swt.geracomium.util;
 
+import android.util.Log;
+
+import com.swt.geracomium.entity.Utils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +52,7 @@ public class Cookie {
         for (String keyValue : str.split("; ")) {
             String[] keyValuePair = keyValue.split("=");
             if (keyValuePair.length != 2) continue;
+            if (keyValuePair[0].equals("csrftoken")) Utils.csrf_token = keyValuePair[1];
             cookies.put(keyValuePair[0], keyValuePair[1]);
         }
     }
