@@ -7,6 +7,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="footer_message">消息</string>
     <string name="footer_post">发表</string>
+    <string name="footer_image">图片</string>
     <string name="footer_notify">提醒</string>
     <string name="footer_personal">我的</string>
     <string name="server_address">http://182.92.193.33:8000</string>

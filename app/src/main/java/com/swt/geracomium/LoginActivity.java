@@ -194,6 +194,8 @@ public class LoginActivity extends Activity {
         final User user = User.getUser();
         final LoginActivity self = this;
 
+        this.mEmailView.setText(username);
+        this.mPasswordView.setText(password);
         final SharedPreferences settings = getPreferences(MODE_PRIVATE);
         CookieStringRequest r = new CookieStringRequest(Request.Method.POST, Utils.server_address + "/api-auth/login/",
                 new Response.Listener<String>() {
