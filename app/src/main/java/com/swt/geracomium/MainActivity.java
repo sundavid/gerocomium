@@ -53,10 +53,7 @@ public class MainActivity extends Activity {
         listView.setAdapter(adapter);
         // listView.setLayoutParams(new AbsListView.LayoutParams(Utils.window_width, Utils.window_height - 110));
 
-        // show progress dialog before making http request;
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("加载中...");
-        progressDialog.show();
+        this.showProgress();
 
         getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1b1b1b")));
 
@@ -67,7 +64,7 @@ public class MainActivity extends Activity {
             @Override
             public void onResponse(JSONArray response) {
                 Log.d(TAG, response.toString());
-                hideProgressDialog();
+                hideProgress();
 
                 // Parsing Json
                 for (int i = 0; i < response.length(); i++) {
@@ -89,25 +86,12 @@ public class MainActivity extends Activity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                hideProgressDialog();
+                hideProgress();
             }
         });
         AppController.getInstance().addToRequestQueue(articleReq);
 
         this.setFooter();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        hideProgressDialog();
-    }
-
-    private void hideProgressDialog() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-            progressDialog = null;
-        }
     }
 
     protected String getType() {

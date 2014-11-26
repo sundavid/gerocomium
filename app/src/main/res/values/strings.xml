@@ -30,5 +30,6 @@
     <string name="connect_error">服务器连接不正常</string>
     <string name="date_server_format">yyyy-MM-dd HH:mm:ss</string>
     <string name="date_client_format">yyyy-MM-dd HH:mm</string>
+    <string name="loading_message">加载中...</string>
 
 </resources>

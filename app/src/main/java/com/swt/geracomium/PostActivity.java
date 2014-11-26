@@ -35,6 +35,7 @@ import com.swt.geracomium.util.CookieStringRequest;
 import com.swt.geracomium.util.ImageUtils;
 import com.swt.geracomium.volley.MultiPartStack;
 import com.swt.geracomium.volley.MultiPartStringRequest;
+import android.app.ProgressDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -140,6 +141,7 @@ public class PostActivity extends Activity {
             e.printStackTrace();
         }
         mVolleyQueue.add(r);
+        this.showProgress();
     }
 
 

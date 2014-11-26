@@ -22,7 +22,7 @@ package com.swt.geracomium.volley;
         import org.apache.http.entity.ContentType;
         import org.apache.http.entity.mime.HttpMultipartMode;
         import org.apache.http.entity.mime.MultipartEntityBuilder;
-        import org.apache.http.entity.mime.MultipartFormEntity;
+
         import org.apache.http.entity.mime.content.FileBody;
         import org.apache.http.entity.mime.content.StringBody;
         import org.apache.http.impl.client.DefaultHttpClient;
@@ -71,8 +71,8 @@ public class MultiPartStack extends HurlStack {
         int timeoutMs = request.getTimeoutMs();
         // TODO: Reevaluate this connection timeout based on more wide-scale
         // data collection and possibly different for wifi vs. 3G.
-        HttpConnectionParams.setConnectionTimeout(httpParams, 5000);
-        HttpConnectionParams.setSoTimeout(httpParams, timeoutMs);
+        // HttpConnectionParams.setConnectionTimeout(httpParams, 5000);
+        // HttpConnectionParams.setSoTimeout(httpParams, timeoutMs);
 
 
         /* Make a thread safe connection manager for the client */
@@ -161,7 +161,8 @@ public class MultiPartStack extends HurlStack {
         // Iterate the fileUploads
         Map<String, File> fileUpload = ((MultiPartRequest) request).getFileUploads();
         for (Map.Entry<String, File> entry : fileUpload.entrySet()) {
-            builder.addBinaryBody(entry.getKey(), entry.getValue());
+            // builder.addBinaryBody(entry.getKey(), entry.getValue());
+            builder.addPart(entry.getKey(), new FileBody(entry.getValue()));
             // builder.addPart(((String) entry.getKey()), new FileBody((File) entry.getValue()));
         }
 

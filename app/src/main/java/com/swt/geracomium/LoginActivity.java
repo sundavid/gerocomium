@@ -158,6 +158,7 @@ public class LoginActivity extends Activity {
 
     public void onError(final String error) {
         this.onError(error, mEmailView);
+        this.hideProgress();
     }
 
     public void loginWithCsrf(final String username, final String password) {
@@ -187,6 +188,7 @@ public class LoginActivity extends Activity {
         }
         );
         mVolleyQueue.add(r);
+        this.showProgress();
     }
 
     public void login(final String username, final String password) {
