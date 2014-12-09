@@ -71,7 +71,8 @@ public class Activity extends FragmentActivity {
         this.findViewById(R.id.alert).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mIntent = new Intent(self, AlertActivity.class);
+                // Intent mIntent = new Intent(self, AlertActivity.class);
+                Intent mIntent = new Intent(self, MainFrameActivity.class);
                 startActivity(mIntent);
             }
         });
