@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
 
         // Create Volley request obj
         CookieJsonArrayRequest articleReq = new CookieJsonArrayRequest(
-                Utils.server_address + "/api/articles/?format=json&type=" + this.getType(),
+                Utils.server_address + "/api/articles/?type=" + this.getType(),
                 new Response.Listener<JSONArray>(){
             @Override
             public void onResponse(JSONArray response) {

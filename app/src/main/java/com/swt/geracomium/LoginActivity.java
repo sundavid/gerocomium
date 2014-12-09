@@ -22,11 +22,7 @@ import com.swt.geracomium.entity.User;
 import com.swt.geracomium.entity.Utils;
 import com.swt.geracomium.util.CookieStringRequest;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -244,7 +240,8 @@ public class LoginActivity extends Activity {
                         try {
                             JSONObject json = new JSONObject(response);
                             user.parse(json);
-                            Intent mIntent = new Intent(self, MainActivity.class);
+                            // Intent mIntent = new Intent(self, MainActivity.class);
+                            Intent mIntent = new Intent(self, MainFrameActivity.class);
                             startActivity(mIntent);
                         } catch (Exception e) {
                             e.printStackTrace();

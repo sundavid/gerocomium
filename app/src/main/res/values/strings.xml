@@ -31,5 +31,6 @@
     <string name="date_server_format">yyyy-MM-dd HH:mm:ss</string>
     <string name="date_client_format">yyyy-MM-dd HH:mm</string>
     <string name="loading_message">加载中...</string>
+    <string name="title_activity_main_frame">MainFrameActivity</string>
 
 </resources>
