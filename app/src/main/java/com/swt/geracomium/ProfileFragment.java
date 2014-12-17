@@ -1,6 +1,7 @@
 package com.swt.geracomium;
 
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,6 +32,12 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        // set actionbar first
+        final ActionBar actionBar = getActivity().getActionBar();
+        actionBar.removeAllTabs();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+
         // Inflate the layout for this fragment
         // return inflater.inflate(R.layout.fragment_profile, container, false);
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_profile,null);

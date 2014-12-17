@@ -42,7 +42,6 @@ public class MessageFragment extends ListFragment {
     private List<Article> articleList = new ArrayList<Article>();
     private CustomListAdapter adapter;
 
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
