@@ -5,6 +5,8 @@ package com.swt.geracomium.volley;
  */
 
 
+        import android.util.Log;
+
         import java.io.File;
         import java.io.IOException;
         import java.util.Map;
@@ -69,10 +71,11 @@ public class MultiPartStack extends HurlStack {
         addHeaders(httpRequest, request.getHeaders());
         HttpParams httpParams = httpRequest.getParams();
         int timeoutMs = request.getTimeoutMs();
+        Log.v("David", "timeout: " + timeoutMs);
         // TODO: Reevaluate this connection timeout based on more wide-scale
         // data collection and possibly different for wifi vs. 3G.
-        // HttpConnectionParams.setConnectionTimeout(httpParams, 5000);
-        // HttpConnectionParams.setSoTimeout(httpParams, timeoutMs);
+        HttpConnectionParams.setConnectionTimeout(httpParams, 50000);
+        HttpConnectionParams.setSoTimeout(httpParams, timeoutMs * 100);
 
 
         /* Make a thread safe connection manager for the client */
@@ -162,7 +165,7 @@ public class MultiPartStack extends HurlStack {
         Map<String, File> fileUpload = ((MultiPartRequest) request).getFileUploads();
         for (Map.Entry<String, File> entry : fileUpload.entrySet()) {
             // builder.addBinaryBody(entry.getKey(), entry.getValue());
-            builder.addPart(entry.getKey(), new FileBody(entry.getValue()));
+            builder.addPart(entry.getKey(), new FileBody(entry.getValue(), ContentType.create("image/jpeg")));
             // builder.addPart(((String) entry.getKey()), new FileBody((File) entry.getValue()));
         }
 

@@ -37,6 +37,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -90,7 +91,8 @@ public class PostFragment extends Fragment {
         posMsgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                self.postArticle();
+                //self.postArticle();
+                self.postImages();
             }
         });
         addImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +156,40 @@ public class PostFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mVolleyQueue.add(r);
+    }
+
+
+    private void postImages() {
+        MultiPartStringRequest r = new MultiPartStringRequest(Request.Method.POST, Utils.server_address + "/api/images/",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.e("image error,", error.toString());
+                try {
+                    Log.e("response", new String(error.networkResponse.data, "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        );
+        for (Uri uri: this.imageUris) {
+            Log.d("selected image", uri.toString());
+            Log.d("selected image", ImageUtils.getPath(getActivity(), uri));
+            String filename = ImageUtils.getPath(getActivity(), uri);
+            Log.d("Image to upload", filename);
+            r.addFileUpload(ImageUtils.getFileName(filename), new File(filename));
+            r.addStringUpload("img",filename);
+        }
+        r.addStringUpload("csrfmiddlewaretoken", Utils.csrf_token);
+        r.addStringUpload("description", "description");
+        r.addStringUpload("author", "" + User.getUser().id);
         mVolleyQueue.add(r);
     }
 

@@ -78,7 +78,8 @@ public class PostActivity extends Activity {
         ((Button)findViewById(R.id.post_message)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                self.postArticle();
+                // self.postArticle();
+                self.postImages();
             }
         });
         ((Button)findViewById(R.id.add_image)).setOnClickListener(new View.OnClickListener() {
@@ -106,7 +107,7 @@ public class PostActivity extends Activity {
 
         final String messageType = type;
         final PostActivity self = this;
-        MultiPartStringRequest r = new MultiPartStringRequest(Request.Method.POST, Utils.server_address + "/api/articles/",
+        MultiPartStringRequest r = new MultiPartStringRequest(Request.Method.POST, Utils.server_address + "/api/images/",
                 new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -140,6 +141,32 @@ public class PostActivity extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mVolleyQueue.add(r);
+        this.showProgress();
+    }
+
+    private void postImages() {
+        MultiPartStringRequest r = new MultiPartStringRequest(Request.Method.POST, Utils.server_address + "/api/images/",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }
+        );
+        for (Uri uri: this.imageUris) {
+            Log.d("selected image", uri.toString());
+            Log.d("selected image", ImageUtils.getPath(this, uri));
+            String filename = ImageUtils.getPath(this, uri);
+            Log.d("Image to upload", filename);
+            r.addFileUpload(ImageUtils.getFileName(filename), new File(filename));
+        }
+        r.addStringUpload("csrfmiddlewaretoken", Utils.csrf_token);
+        r.addStringUpload("description", "description");
+        r.addStringUpload("author", "" + User.getUser().id);
         mVolleyQueue.add(r);
         this.showProgress();
     }

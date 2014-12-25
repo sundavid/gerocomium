@@ -22,6 +22,8 @@ import com.swt.geracomium.entity.User;
 import com.swt.geracomium.entity.Utils;
 import com.swt.geracomium.util.CookieStringRequest;
 
+import com.igexin.sdk.PushManager;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -57,6 +59,9 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         init();
         super.onCreate(savedInstanceState);
+
+        PushManager.getInstance().initialize(this.getApplicationContext());
+
         /*
         setup global settings
          */
