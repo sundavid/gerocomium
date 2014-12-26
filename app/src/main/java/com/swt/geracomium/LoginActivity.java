@@ -23,6 +23,7 @@ import com.swt.geracomium.entity.Utils;
 import com.swt.geracomium.util.CookieStringRequest;
 
 import com.igexin.sdk.PushManager;
+import com.tencent.android.tpush.XGPushManager;
 
 import org.json.JSONObject;
 
@@ -62,6 +63,7 @@ public class LoginActivity extends Activity {
 
         PushManager.getInstance().initialize(this.getApplicationContext());
 
+        XGPushManager.registerPush(this.getApplicationContext());
         /*
         setup global settings
          */
