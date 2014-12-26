@@ -1,5 +1,6 @@
 package com.swt.geracomium;
 
+import android.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 
@@ -76,6 +77,12 @@ public class PostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        // set actionbar first
+        final ActionBar actionBar = getActivity().getActionBar();
+        actionBar.removeAllTabs();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post, container, false);
 

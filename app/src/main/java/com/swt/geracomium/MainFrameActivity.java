@@ -22,7 +22,7 @@ public class MainFrameActivity extends FragmentActivity {
         Bundle b = new Bundle();
         b.putString("key", "消息");
         mTabHost.addTab(mTabHost.newTabSpec("msg").setIndicator("消息"),
-                MessageFragment.class,
+                SwipeViewsFragment.class,
                 b);
 
         b = new Bundle();
@@ -31,11 +31,11 @@ public class MainFrameActivity extends FragmentActivity {
                 PostFragment.class,
                 b);
 
-        b = new Bundle();
-        b.putString("key", "提醒");
-        mTabHost.addTab(mTabHost.newTabSpec("alert").setIndicator("提醒"),
-                AlertFragment.class,
-                b);
+        // b = new Bundle();
+        // b.putString("key", "提醒");
+        // mTabHost.addTab(mTabHost.newTabSpec("alert").setIndicator("提醒"),
+        //        AlertFragment.class,
+        //        b);
 
         b = new Bundle();
         b.putString("key", "我的");
